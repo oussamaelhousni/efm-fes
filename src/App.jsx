@@ -1,46 +1,67 @@
 import React from "react";
 import {
   addVoiture,
-  supprimerVoiture,
+  deleteVoiture,
   updateVoiture,
 } from "./slices/voitureSlice";
 import { useDispatch } from "react-redux";
 import Voiture from "./components/Voiture";
 import ListeVoiture from "./components/ListeVoiture";
-import { Link, Routes, Route } from "react-router-dom";
-import DetailsVoiture from "./components/DetailsVoiture";
-const v = {
-  id: "v1",
-  Marque: "Dacia_Logan",
+import DetailVoiture from "./components/DetailVoiture";
+import { Link, Route, Routes } from "react-router-dom";
+import SupprimerVoiture from "./components/SupprimerVoiture";
+const voiture = {
+  id: "v2",
+  Marque: "Dacia_Sandero",
   TypeCarburant: "Diesel",
-  PrixLocation: 200,
+  PrixLocation: 1500,
   image: "dacia.jpg",
 };
 function App() {
   const dispatch = useDispatch();
+
   return (
     <div>
-      <ul className="nav">
-        <li className="nav-item">
-          <Link className="nav-link active" to="/">
-            Liste Voitures
-          </Link>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/add">
-            Ajouter Voiture
-          </a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/del">
-            Supprimer Voiture
-          </a>
-        </li>
-      </ul>
-
+      <button
+        onClick={() => {
+          dispatch(
+            addVoiture({
+              id: "v2",
+              Marque: "Dacia_Sandero",
+              TypeCarburant: "Diesel",
+              PrixLocation: 1500,
+              image: "dacia.jpg",
+            }),
+          );
+        }}
+      >
+        Ajouter
+      </button>
+      <button
+        onClick={() => {
+          dispatch(deleteVoiture("v1"));
+        }}
+      >
+        Supprimer
+      </button>
+      <button
+        onClick={() => {
+          dispatch(
+            updateVoiture({ id: "v3", PrixLocation: 10, image: "dacia.jpg" }),
+          );
+        }}
+      >
+        update
+      </button>
+      <header>
+        <Link to="/">Liste Voiture</Link>
+        <Link to="/add">Add</Link>
+        <Link to="/add">Del</Link>
+      </header>
       <Routes>
         <Route path="/" element={<ListeVoiture />} />
-        <Route path="/:id" element={<DetailsVoiture />} />
+        <Route path="/:id" element={<DetailVoiture />} />
+        <Route path="/del" element={<SupprimerVoiture />} />
       </Routes>
     </div>
   );

@@ -9,13 +9,6 @@ const initState = {
       PrixLocation: 200,
       image: "dacia.jpg",
     },
-    {
-      id: "v2",
-      Marque: "Dacia_Sandero",
-      TypeCarburant: "Diesel",
-      PrixLocation: 500,
-      image: "dacia.jpg",
-    },
   ],
 };
 
@@ -26,35 +19,34 @@ const voitureSlice = createSlice({
     addVoiture: (state, action) => {
       state.voitures.push(action.payload);
     },
-    supprimerVoiture: (state, action) => {
+    deleteVoiture: (state, action) => {
       state.voitures = state.voitures.filter((v) => v.id !== action.payload);
     },
     updateVoiture: (state, action) => {
-      // map
-      /* state.voitures = state.voitures.map((v) => {
-        if (v.id === action.payload.id) {
-          return { ...v, ...action.payload };
-        }
-        return { ...v };
-      }); */
-
-      /* const index = state.voitures.findIndex((v) => v.id === action.payload.id);
-
-      if (index !== -1) {
-        state.voitures[index] = { ...state.voitures[index], ...action.payload };
-      } */
-
-      const v = state.voitures.find((v) => v.id === action.payload.id);
-
+      /* const v = state.voitures.find((v) => action.payload.id === v.id);
       if (v) {
-        Object.keys(action.payload).forEach((key) => {
-          v[key] = action.payload[key];
+         v.Marque = action.payload.Marque;
+        v.image = action.payload.image;
+        v.TypeCarburant = action.payload.TypeCarburant;
+        v.PrixLocation = action.payload.PrixLocation; 
+
+        Object.keys(action.payload).forEach((k) => {
+          v[k] = action.payload[k];
         });
-      }
+      } */
+      const vIndex = state.voitures.findIndex(
+        (v) => action.payload.id === v.id,
+      );
+      if (vIndex !== -1)
+        state.voitures[vIndex] = {
+          ...state.voitures[vIndex],
+          ...action.payload,
+        };
     },
   },
 });
 
-export const { addVoiture, supprimerVoiture, updateVoiture } =
+export const { addVoiture, deleteVoiture, updateVoiture } =
   voitureSlice.actions;
+
 export default voitureSlice.reducer;
